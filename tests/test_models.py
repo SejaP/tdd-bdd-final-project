@@ -104,3 +104,41 @@ class TestProductModel(unittest.TestCase):
     #
     # ADD YOUR TEST CASES HERE
     #
+    def test_read_a_product(self):
+        """it should read a product from the database"""
+        product = ProductFactory()
+        product.id = None
+        product.create()
+        self.assertIsNotNone(product.id)
+        product.description = "testdescription"
+        prodid = product.id
+        product.update()
+        self.assertEqual(product.description, "testdescription")
+        self.assertEqual(product.id, prodid)
+        products = Product.all()
+        self.assertEqual(len(products), 1)
+        new_product = products[0]
+        self.assertEqual(product.id,  new_product.id)
+        self.assertEqual(product.description, "testdescription")
+
+    def test_delete_a_product(self):
+        """It should delete a product from the database"""
+        product = ProductFactory()
+        product.id = None
+        product.create()
+        products = Product.all()
+        self.assertEqual(len(products), 1)
+        product.delete()
+        products = Product.all()
+        self.assertEqual(len(products), 0)
+
+    def test_list_all_products(self):
+        """it should get a list with all products"""
+        products = Product.all()
+        self.assertEqual(len(products), 0)
+        for i in range (5):
+            product = ProductFactory()
+            product.create()
+        products = Product.all()
+        self.assertEqual(len(products), 5)
+
