@@ -104,6 +104,17 @@ class TestProductModel(unittest.TestCase):
     #
     # ADD YOUR TEST CASES HERE
     #
+    def test_find_a_product(self):
+        product = ProductFactory()
+        product.id = None
+        product.create()
+        name = product.name
+        id = product.id
+        found = Product.find(id)
+        self.assertEqual(found.name, name)
+
+
+
     def test_read_a_product(self):
         """it should read a product from the database"""
         product = ProductFactory()
@@ -142,3 +153,55 @@ class TestProductModel(unittest.TestCase):
         products = Product.all()
         self.assertEqual(len(products), 5)
 
+    def test_find_product_by_name(self):
+        """it should find a product by name"""
+        for i in range (5):
+            product = ProductFactory()
+            product.create()
+        products = Product.all()
+        name=products[0].name
+        name_count=len([product for product in products if product.name == name])
+        found_products = Product.find_by_name(name)
+        self.assertEqual(found_products.count(), name_count)
+        for product in found_products:
+            self.assertEqual(product.name, name)
+
+    def test_find_by_availability(self):
+        """it should find products based on their availability"""
+        for i in range (10):
+            product = ProductFactory()
+            product.create()
+        products = Product.all()
+        availability = products[0].available
+        count=len([product for product in products if product.available == availability])
+        found_products = Product.find_by_availability(availability)
+        self.assertEqual(found_products.count(), count)
+        for product in found_products:
+            self.assertEqual(product.available, availability)
+    
+    def test_find_by_category(self):
+        """it should find products based on their category"""
+        for i in range (10):
+            product = ProductFactory()
+            product.create()
+        products = Product.all()
+        category = products[0].category
+        count=len([product for product in products if product.category == category])
+        found_products = Product.find_by_category(category)
+        self.assertEqual(found_products.count(), count)
+        for product in found_products:
+            self.assertEqual(product.category, category)
+
+    def test_find_by_price(self):
+        """it should find products based on their price"""
+        for i in range (10):
+            product = ProductFactory()
+            product.create()
+        products = Product.all()
+        price = products[0].price
+        self.assertEqual(type(price), Decimal)
+        count=len([product for product in products if product.price == price])
+        found_products = Product.find_by_price(price)
+        self.assertEqual(found_products.count(), count)
+        for product in found_products:
+            self.assertEqual(product.price, price)
