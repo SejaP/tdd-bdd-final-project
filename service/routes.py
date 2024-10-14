@@ -167,7 +167,7 @@ def update_products(product_id):
 
 
 @app.route("/products/<int:product_id>", methods=["DELETE"])
-def delete_products(product_id):
+def delete_product(product_id):
     """
     Delete a Product
     This endpoint will delete a Product based the id specified in the path
