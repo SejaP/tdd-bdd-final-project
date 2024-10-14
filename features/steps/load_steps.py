@@ -24,6 +24,8 @@ For information on Waiting until elements are present in the HTML see:
 """
 import requests
 from behave import given
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
 
 # HTTP Return Codes
 HTTP_200_OK = 200
@@ -59,8 +61,8 @@ def step_impl(context):
 
 @when(u'I press the "{button}" button')
 def step_impl(context, button):
-    button_id = lower(button) + '-btn'
-    context.driver.find_element_by_id(button_id).click()
+    button_id = button.lower() + '-btn'
+    context.driver.find_element(By.ID, button_id).click()
 
 @then(u'I should see "{name}" in the results')
 def step_impl(context, name):
@@ -74,12 +76,12 @@ def step_impl(context, name):
 
 @then(u'I should not see "{name}" in the results')
 def step_impl(context, name):
-    element = context.driver.find_element_by_id('search_results')
+    element = context.driver.find(By.ID, 'search_results')
     assert(name not in element.text)
 
 
 @then(u'I should see the message "{message}"')
-def step_impl(context, messahe):
+def step_impl(context, message):
     found = WebDriverWait(context.driver, context.wait_seconds).until(
         expected_conditions.text_to_be_present_in_element(
             (By.ID, 'flash_message'),
@@ -88,3 +90,9 @@ def step_impl(context, messahe):
     )
     assert(found)
     
+@when(u'I set "{field}" to "{value}"')
+def step_impl(context, field, value):
+    element_id = field.lower().replace(' ', '_')
+    element = context.driver.find_element(By.ID, element_id)
+    element.clear()
+    element.send_keys(value)
