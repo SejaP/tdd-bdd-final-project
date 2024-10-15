@@ -85,7 +85,7 @@ Scenario: Delete a Product
     And I press the "Clear" button
     And I paste the "Id" field
     And I press the "Delete" button
-    When I press the "Clear" button
+    And I press the "Clear" button
     And I press the "Search" button
     Then I should not see "Hat" in the results
 
