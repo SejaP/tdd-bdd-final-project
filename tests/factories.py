@@ -35,15 +35,16 @@ class ProductFactory(factory.Factory):
         choices=[
             "Hat",
             "Pants",
-            "Shirt",
+            "Shoes",
             "Apple",
             "Banana",
+            "Bread",
             "Pots",
             "Towels",
             "Ford",
-            "Chevy",
+            "BMW",
             "Hammer",
-            "Wrench"
+            "Drill"
         ]
     )
     description = factory.Faker("text")
